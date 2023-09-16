@@ -1,11 +1,13 @@
 from aiogram import Bot, Dispatcher
-from src.config import Config
+from config import Config
 import logging
 from aiogram import F
 import asyncio
 from aiogram.filters import Command, CommandStart
+from PIL import Image, ImageDraw, ImageFont
 
 from handlers.user.start_actions import start
+from ticket_generating.create_ticket import CreatePicture
 
 
 async def main():
@@ -14,7 +16,6 @@ async def main():
 
     bot = Bot(token=Config.token)
     dp = Dispatcher()
-
     
 
     dp.message.register(start, CommandStart())
