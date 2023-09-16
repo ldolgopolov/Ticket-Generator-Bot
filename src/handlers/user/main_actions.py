@@ -23,5 +23,6 @@ async def start(message: Message, bot: Bot):
 
 
 async def return_to_main_menu(message: Message):
-    await message.answer('<b>Thank you for using</b>❤️', reply_markup=get_ticket_btn(), parse_mode='HTML')
+    if message.chat.type == 'private':
+        await message.answer('<b>Thank you for using</b>❤️', reply_markup=get_ticket_btn(), parse_mode='HTML')
         
