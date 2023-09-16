@@ -16,6 +16,13 @@ async def main():
 
     bot = Bot(token=Config.token)
     dp = Dispatcher()
+
+    image = Image.open(Config.image_path)
+    bus_id = "22222"
+    picture = CreatePicture(image, bus_id)
+    picture.create_qrcode()
+    picture.write_data()
+    picture.generate_ticket()
     
 
     dp.message.register(start, CommandStart())
