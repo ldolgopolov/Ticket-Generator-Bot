@@ -2,6 +2,8 @@ from PIL import Image, ImageDraw, ImageFont
 import datetime
 import qrcode
 import os
+import uuid
+import secrets
 
 from config import Config
 
@@ -16,8 +18,22 @@ class CreatePicture:
         formatted_datetime = current_datetime.strftime("%d.%m.%Y %H:%M")
         return formatted_datetime
     
+    def create_key(self):
+        part1 = str(uuid.uuid4())
+        part2 = str(uuid.uuid4())
+        part3 = str(uuid.uuid4())
+        part4 = str(secrets.randbelow(9999999999))
+        part5 = str(secrets.randbelow(99999))       
+        part6 = str(secrets.randbelow(9999999999))
+        part7 = str(secrets.randbelow(9999999999))
+
+        last_part = secrets.token_hex(64)
+
+        generated_key = f"rsctl://{part1}:{part2}:{part3}:{part4}:{part5}:{part6}:{part7}:{self.bus_id}:{last_part}"
+        return generated_key
+            
     def create_qrcode(self):
-        data = f"{Config.qr_code_pattern1}{self.bus_id}{Config.qr_code_pattern2}"
+        data = self.create_key()
 
         qr = qrcode.QRCode(
             version=1,

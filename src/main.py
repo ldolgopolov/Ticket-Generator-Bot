@@ -4,10 +4,11 @@ import logging
 from aiogram import F
 import asyncio
 from aiogram.filters import Command, CommandStart
-from PIL import Image, ImageDraw, ImageFont
 
-from handlers.user.start_actions import start
-from ticket_generating.create_ticket import CreatePicture
+from handlers.user.get_ticket_actions import get_bus_id, send_ticket
+from handlers.user.main_actions import return_to_main_menu, start
+from handlers.admin.admin_notify import on_startup, on_shutdown
+from utils.states.state_ticket import GetBusID
 
 
 async def main():
@@ -17,13 +18,13 @@ async def main():
     bot = Bot(token=Config.token)
     dp = Dispatcher()
 
-    image = Image.open(Config.image_path)
-    bus_id = "22222"
-    picture = CreatePicture(image, bus_id)
-    picture.create_qrcode()
-    picture.write_data()
-    picture.generate_ticket()
-    
+    dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
+
+    dp.message.register(get_bus_id, F.text == '🆓 Get a ticket')
+    dp.message.register(return_to_main_menu, F.text == 'To the main menu➡️')
+
+    dp.message.register(send_ticket, GetBusID.GET_ID)
 
     dp.message.register(start, CommandStart())
 
