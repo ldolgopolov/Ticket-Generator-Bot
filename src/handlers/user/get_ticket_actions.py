@@ -37,6 +37,6 @@ async def send_ticket(message: Message, bot: Bot, state: FSMContext):
         await bot.delete_message(message.chat.id, message_id=sticker.message_id)
 
         ticket = FSInputFile("ticket.jpg")
-        await bot.send_photo(chat_id=message.chat.id, photo=ticket, caption="<b>Never show this ticket to the checker❗️\nThis ticket is not a working❗️</b>", parse_mode='HTML', reply_markup=to_main_menu())
+        await bot.send_photo(chat_id=message.chat.id, photo=ticket, caption="<b>Never show this ticket to the checker❗️\nThis ticket is not working❗️</b>", parse_mode='HTML', reply_markup=to_main_menu())
 
         picture.delete_files("ticket.jpg")
